@@ -7,6 +7,7 @@ import DashboardPage from './pages/DashboardPage.jsx';
 import IncidentsPage from './pages/IncidentsPage.jsx';
 import NewIncidentPage from './pages/NewIncidentPage.jsx';
 import IncidentDetailPage from './pages/IncidentDetailPage.jsx';
+import TopologyPage from './pages/TopologyPage.jsx';
 
 function RequireAuth({ children }) {
   const { session } = useAuth();
@@ -28,6 +29,7 @@ export default function App() {
           }
         >
           <Route path="/" element={<DashboardPage />} />
+          <Route path="/topology" element={<TopologyPage />} />
           <Route path="/incidents" element={<IncidentsPage />} />
           <Route path="/incidents/new" element={<NewIncidentPage />} />
           <Route path="/incidents/:id" element={<IncidentDetailPage />} />

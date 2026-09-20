@@ -25,6 +25,7 @@ export default function TopBar() {
           <span className="text-lg font-semibold tracking-tight">NetOps Live</span>
           <nav className="flex gap-4" aria-label="Main">
             <NavLink to="/" end className={navClass}>Dashboard</NavLink>
+            <NavLink to="/topology" className={navClass}>Topology</NavLink>
             <NavLink to="/incidents" className={navClass}>Incidents</NavLink>
           </nav>
         </div>
