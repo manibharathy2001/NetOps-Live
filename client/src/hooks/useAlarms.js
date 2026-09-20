@@ -27,5 +27,14 @@ export function useAlarms() {
     setCleared((list) => [alarm, ...list.filter((a) => a._id !== alarm._id)].slice(0, 5));
   });
 
+  // alarm:raised arrives before the server links the alarm to an incident,
+  // so pick up the link from the incident events.
+  const linkToIncident = (incident) => {
+    const ids = new Set(incident.alarms || []);
+    setAlarms((list) => list.map((a) => (ids.has(a._id) && !a.incident ? { ...a, incident: incident._id } : a)));
+  };
+  useSocketEvent('incident:created', linkToIncident);
+  useSocketEvent('incident:updated', linkToIncident);
+
   return { alarms, cleared };
 }

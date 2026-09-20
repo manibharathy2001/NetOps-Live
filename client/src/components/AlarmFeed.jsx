@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { SEVERITY_STYLE, timeAgo } from '../lib/format.js';
 import { useNow } from '../hooks/useNow.js';
 
@@ -29,8 +30,12 @@ export default function AlarmFeed({ alarms, cleared }) {
                     <span className="mx-1.5">on</span>
                     <span className="font-mono">{alarm.hostname}</span>
                     <span className="ml-1.5">{timeAgo(alarm.raisedAt, now)}</span>
-                    {alarm.incident && <span className="ml-1.5">, tracked in an incident</span>}
                   </p>
+                  {alarm.incident && (
+                    <Link to={`/incidents/${alarm.incident}`} className="mt-1 inline-block text-xs font-medium text-action hover:underline">
+                      View incident
+                    </Link>
+                  )}
                 </div>
               </li>
             );

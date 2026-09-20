@@ -1,8 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from './context/AuthContext.jsx';
 import { SocketProvider } from './context/SocketContext.jsx';
+import Layout from './components/Layout.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
+import IncidentsPage from './pages/IncidentsPage.jsx';
+import NewIncidentPage from './pages/NewIncidentPage.jsx';
+import IncidentDetailPage from './pages/IncidentDetailPage.jsx';
 
 function RequireAuth({ children }) {
   const { session } = useAuth();
@@ -17,13 +21,17 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route
-          path="/"
           element={
             <RequireAuth>
-              <DashboardPage />
+              <Layout />
             </RequireAuth>
           }
-        />
+        >
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/incidents" element={<IncidentsPage />} />
+          <Route path="/incidents/new" element={<NewIncidentPage />} />
+          <Route path="/incidents/:id" element={<IncidentDetailPage />} />
+        </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

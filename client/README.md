@@ -25,7 +25,10 @@ Socket reconnects                     ->  REST refetch, so nothing is missed
 - `hooks/useSocketEvent.js`: subscribe/unsubscribe to one event, tied to a component's lifetime
 - `hooks/useDevices.js`: merges `device:status`, `device:metrics`, `device:interface`, `device:bgp`, `device:isis`
 - `hooks/useAlarms.js`: `alarm:raised` / `alarm:cleared`
-- `components/IncidentToasts.jsx`: `incident:created` notification for every engineer
+- `components/IncidentToasts.jsx`: `incident:created` notification for every engineer, on every page
+- `hooks/useIncidents.js`: live incident list per filter (`incident:created` / `incident:updated`)
+- `hooks/useIncident.js`: one incident; joins its room for comments and presence, sends `version` on
+  every edit and recovers from a `409` conflict by reloading
 
 ## Structure
 
@@ -33,8 +36,8 @@ Socket reconnects                     ->  REST refetch, so nothing is missed
 src/
 ├── lib/          api.js (fetch + JWT), format.js
 ├── context/      AuthContext, SocketContext
-├── hooks/        useSocketEvent, useDevices, useAlarms, useNow
-├── pages/        LoginPage, DashboardPage
-└── components/   TopBar, StatusSummary, DeviceTable, DeviceRow, DeviceDetail,
-                  AlarmFeed, SimulatorPanel, IncidentToasts, StatusBadge, UsageBar
+├── hooks/        useSocketEvent, useDevices, useAlarms, useIncidents, useIncident, useNow
+├── pages/        LoginPage, DashboardPage, IncidentsPage, NewIncidentPage, IncidentDetailPage
+└── components/   Layout, TopBar, StatusSummary, DeviceTable, DeviceRow, DeviceDetail,
+                  AlarmFeed, SimulatorPanel, IncidentToasts, IncidentBadges, StatusBadge, UsageBar
 ```

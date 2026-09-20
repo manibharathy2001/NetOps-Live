@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { clockTime, formatBps, formatSpeed, timeAgo } from '../lib/format.js';
 
 const stateColour = (ok) => (ok ? 'text-up' : 'text-down');
@@ -85,6 +86,12 @@ export default function DeviceDetail({ device, now }) {
           ) : (
             <p className="text-sm text-muted">No events since the network was seeded.</p>
           )}
+          <Link
+            to={`/incidents/new?device=${encodeURIComponent(device.hostname)}`}
+            className="mt-3 inline-block rounded-md border border-line bg-panel px-3 py-1.5 text-sm font-medium hover:bg-canvas"
+          >
+            Open an incident for {device.hostname}
+          </Link>
         </div>
       </div>
     </div>
