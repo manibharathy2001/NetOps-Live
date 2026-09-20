@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/*
+ * NetOps Live palette. Status colours are reserved for device and alarm
+ * state only, so red/amber/green always mean something on this screen.
+ */
+@theme {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, Menlo, monospace;
+
+  --color-canvas: #edf0f3;
+  --color-panel: #ffffff;
+  --color-ink: #16233a;
+  --color-muted: #5b6778;
+  --color-line: #d5dbe3;
+  --color-action: #1f4e9c;
+
+  --color-up: #1e8e5a;
+  --color-warn: #b7791f;
+  --color-down: #c53b3b;
+}
+
+html {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-action);
+  outline-offset: 2px;
+}
