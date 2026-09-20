@@ -23,12 +23,16 @@ const timelineSchema = new Schema(
   { _id: false }
 );
 
-// Filled in Phase 5 (Cloudinary).
+// Files stored in Cloudinary (screenshots, show-command output, etc.)
 const attachmentSchema = new Schema({
-  url: String,
-  publicId: String,
-  filename: String,
+  url: { type: String, required: true },
+  publicId: { type: String, required: true },
+  resourceType: { type: String, enum: ['image', 'raw'], default: 'image' },
+  filename: { type: String, required: true },
+  mimeType: String,
+  bytes: Number,
   uploadedBy: String,
+  uploadedById: String,
   uploadedAt: { type: Date, default: Date.now },
 });
 

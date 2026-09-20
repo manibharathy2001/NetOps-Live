@@ -1,3 +1,5 @@
+const HttpError = require('../utils/httpError');
+
 // eslint-disable-next-line no-unused-vars
 module.exports = (err, req, res, next) => {
   if (err.name === 'VersionError') {
@@ -9,5 +11,8 @@ module.exports = (err, req, res, next) => {
 
   const status = err.status || 500;
   if (status >= 500) console.error(err);
-  return res.status(status).json({ message: status >= 500 ? 'Internal server error' : err.message });
+  // Errors we raised on purpose (HttpError) have safe, useful messages.
+  // Only unexpected crashes get the generic text.
+  const message = err instanceof HttpError ? err.message : 'Internal server error';
+  return res.status(status).json({ message });
 };

@@ -7,6 +7,7 @@ import { api } from '../lib/api.js';
 import { SEVERITIES, STATUS_TRANSITIONS, describeTimelineEntry } from '../lib/incidents.js';
 import { SEVERITY_STYLE, clockTime, timeAgo } from '../lib/format.js';
 import { IncidentStatusBadge, SeverityBadge } from '../components/IncidentBadges.jsx';
+import Attachments from '../components/Attachments.jsx';
 
 const selectClass = 'w-full rounded-md border border-line bg-panel px-2.5 py-1.5 text-sm disabled:opacity-60';
 
@@ -213,6 +214,13 @@ function Comments({ incident, canEdit, onAdd, now }) {
   );
 }
 
+// Attachment entries are described here so lib/incidents.js doesn't need changing.
+function describe(e) {
+  if (e.action === 'attachment_added') return `${e.actor} attached ${e.note}`;
+  if (e.action === 'attachment_removed') return `${e.actor} removed ${e.note}`;
+  return describeTimelineEntry(e);
+}
+
 function Timeline({ entries }) {
   const newestFirst = [...entries].reverse();
   return (
@@ -220,7 +228,7 @@ function Timeline({ entries }) {
       {newestFirst.map((e, i) => (
         <li key={`${e.at}-${i}`} className="relative">
           <span className="absolute top-1.5 -left-[21px] h-2 w-2 rounded-full border border-line bg-panel" aria-hidden="true" />
-          <p className="text-sm">{describeTimelineEntry(e)}</p>
+          <p className="text-sm">{describe(e)}</p>
           <p className="text-xs text-muted">{clockTime(e.at)}</p>
         </li>
       ))}
@@ -283,6 +291,9 @@ export default function IncidentDetailPage() {
           )}
           <Panel title="Alarms" aside={<span className="text-sm text-muted tabular-nums">{incident.alarms.length}</span>}>
             <LinkedAlarms incident={incident} />
+          </Panel>
+          <Panel title="Attachments" aside={<span className="text-sm text-muted tabular-nums">{incident.attachments.length}</span>}>
+            <Attachments incident={incident} canEdit={canEdit} />
           </Panel>
           <Panel title="Comments" aside={<span className="text-sm text-muted tabular-nums">{incident.comments.length}</span>}>
             <Comments incident={incident} canEdit={canEdit} onAdd={addComment} now={now} />
