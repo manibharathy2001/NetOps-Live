@@ -14,6 +14,7 @@ const DEMO_USERS = [
   { name: 'Admin', email: 'admin@netops.local', password: 'admin123', role: 'admin' },
   { name: 'Mani', email: 'mani@netops.local', password: 'mani1234', role: 'engineer' },
   { name: 'Priya', email: 'priya@netops.local', password: 'priya1234', role: 'engineer' },
+  { name: 'Guest', email: 'guest@netops.local', password: 'guest1234', role: 'viewer' }
 ];
 
 (async () => {

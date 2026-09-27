@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import StatusBadge, { STATUS } from './StatusBadge.jsx';
 import UsageBar from './UsageBar.jsx';
 import DeviceDetail from './DeviceDetail.jsx';
+import Sparkline from './Sparkline.jsx';
 import { SEVERITY_RANK, SEVERITY_STYLE, timeAgo } from '../lib/format.js';
 
-const COLUMN_COUNT = 8;
+const COLUMN_COUNT = 9;
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -12,6 +14,7 @@ export default function DeviceRow({ device, alarms, changedAt, expanded, onToggl
   const rowRef = useRef(null);
   const s = STATUS[device.status] || STATUS.UP;
   const isDown = device.status === 'DOWN';
+  const Chevron = expanded ? ChevronDown : ChevronRight;
 
   // The one deliberate animation on the page: when a device's state changes
   // from a live event, its row flashes in the new status colour.
@@ -27,15 +30,12 @@ export default function DeviceRow({ device, alarms, changedAt, expanded, onToggl
   const ifUp = device.interfaces.filter((i) => i.operStatus === 'up').length;
   const bgpUp = device.bgpNeighbors.filter((n) => n.state === 'Established').length;
   const detailId = `detail-${device.hostname}`;
+  const cpuColour = device.cpu >= 85 ? 'text-down' : device.cpu >= 75 ? 'text-warn' : 'text-up';
 
   return (
     <>
-      <tr
-        ref={rowRef}
-        onClick={onToggle}
-        className="cursor-pointer border-t border-line hover:bg-canvas/50"
-      >
-        <td className={`border-l-4 py-3 pr-4 pl-4 ${s.stripe}`}>
+      <tr ref={rowRef} onClick={onToggle} className="cursor-pointer border-t border-line hover:bg-canvas/60">
+        <td className={`border-l-4 py-3 pr-4 pl-3 ${s.stripe}`}>
           <button
             type="button"
             onClick={(e) => {
@@ -44,13 +44,16 @@ export default function DeviceRow({ device, alarms, changedAt, expanded, onToggl
             }}
             aria-expanded={expanded}
             aria-controls={detailId}
-            className="text-left"
+            className="flex items-start gap-1.5 text-left"
           >
-            <span className="block font-mono font-medium">{device.hostname}</span>
-            <span className="block text-xs text-muted">{device.platform}</span>
+            <Chevron size={16} className="mt-0.5 shrink-0 text-muted" aria-hidden="true" />
+            <span>
+              <span className="block font-mono font-medium">{device.hostname}</span>
+              <span className="block text-xs text-muted">{device.platform}</span>
+            </span>
           </button>
           {worstAlarm && (
-            <span className={`mt-1 block max-w-[28ch] truncate text-xs ${SEVERITY_STYLE[worstAlarm.severity].text}`}>
+            <span className={`mt-1 block max-w-[28ch] truncate pl-[22px] text-xs ${SEVERITY_STYLE[worstAlarm.severity].text}`}>
               {worstAlarm.message}
             </span>
           )}
@@ -61,6 +64,9 @@ export default function DeviceRow({ device, alarms, changedAt, expanded, onToggl
         <td className="hidden py-3 pr-4 font-mono text-sm md:table-cell">{device.mgmtIp}</td>
         <td className="py-3 pr-4">
           <UsageBar value={device.cpu} warnAt={75} critAt={85} disabled={isDown} />
+        </td>
+        <td className={`hidden py-3 pr-4 xl:table-cell ${cpuColour}`}>
+          {!isDown && <Sparkline value={device.cpu} label={`CPU trend for ${device.hostname}`} />}
         </td>
         <td className="hidden py-3 pr-4 sm:table-cell">
           <UsageBar value={device.memory} warnAt={80} critAt={90} disabled={isDown} />

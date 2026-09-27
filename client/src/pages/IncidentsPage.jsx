@@ -6,6 +6,7 @@ import { useNow } from '../hooks/useNow.js';
 import { FILTERS } from '../lib/incidents.js';
 import { timeAgo } from '../lib/format.js';
 import { IncidentStatusBadge, SeverityBadge } from '../components/IncidentBadges.jsx';
+import { SkeletonRows } from '../components/Skeleton.jsx';
 
 const EMPTY_TEXT = {
   open: 'No open incidents. When a critical alarm fires, an incident opens here automatically.',
@@ -89,7 +90,7 @@ export default function IncidentsPage() {
       </div>
 
       <section className="mt-5 rounded-lg border border-line bg-panel">
-        {loading && <p className="px-5 py-6 text-sm text-muted">Loading incidents…</p>}
+        {loading && <SkeletonRows rows={4} />}
         {error && <p className="px-5 py-6 text-sm text-down" role="alert">{error}</p>}
         {!loading && !error && incidents.length === 0 && (
           <p className="px-5 py-6 text-sm text-muted">{EMPTY_TEXT[filter]}</p>

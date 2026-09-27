@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Background, Controls, ReactFlow, useNodesState } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { useTheme } from '../context/ThemeContext.jsx';
 import { useDevices } from '../hooks/useDevices.js';
 import { useAlarms } from '../hooks/useAlarms.js';
 import { useNow } from '../hooks/useNow.js';
@@ -23,16 +24,16 @@ function loadSaved() {
 function Legend() {
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-muted">
-      <span className="flex items-center gap-2">
-        <svg width="28" height="6" aria-hidden="true"><line x1="0" y1="3" x2="28" y2="3" stroke="#8494a7" strokeWidth="3" /></svg>
+      <span className="flex items-center gap-2 text-muted">
+        <svg width="28" height="6" aria-hidden="true"><line x1="0" y1="3" x2="28" y2="3" stroke="currentColor" strokeWidth="3" /></svg>
         100G link
       </span>
-      <span className="flex items-center gap-2">
-        <svg width="28" height="6" aria-hidden="true"><line x1="0" y1="3" x2="28" y2="3" stroke="#8494a7" strokeWidth="1.75" /></svg>
+      <span className="flex items-center gap-2 text-muted">
+        <svg width="28" height="6" aria-hidden="true"><line x1="0" y1="3" x2="28" y2="3" stroke="currentColor" strokeWidth="1.75" /></svg>
         10G link
       </span>
-      <span className="flex items-center gap-2">
-        <svg width="28" height="6" aria-hidden="true"><line x1="0" y1="3" x2="28" y2="3" stroke="#c53b3b" strokeWidth="2" strokeDasharray="6 4" /></svg>
+      <span className="flex items-center gap-2 text-down">
+        <svg width="28" height="6" aria-hidden="true"><line x1="0" y1="3" x2="28" y2="3" stroke="currentColor" strokeWidth="2" strokeDasharray="6 4" /></svg>
         Link down
       </span>
     </div>
@@ -40,6 +41,7 @@ function Legend() {
 }
 
 export default function TopologyPage() {
+  const { theme } = useTheme();
   const { devices, loading, error, changedAt } = useDevices();
   const { alarms } = useAlarms();
   const now = useNow(5000);
@@ -82,9 +84,14 @@ export default function TopologyPage() {
   }, [devices, alarmsByHost, changedAt, selection, defaults, setNodes]);
 
   const links = useMemo(() => buildLinks(devices), [devices]);
+  // theme is a dependency because edge colours are read from the CSS variables.
   const edges = useMemo(
     () => toEdges(links, selection?.kind === 'link' ? selection.id : null),
-    [links, selection]
+    [links, selection, theme]
+  );
+  const gridColour = useMemo(
+    () => getComputedStyle(document.documentElement).getPropertyValue('--color-line').trim() || '#d8dee6',
+    [theme]
   );
 
   // Fit the diagram to the screen once, after the first nodes are measured.
@@ -161,7 +168,7 @@ export default function TopologyPage() {
               minZoom={0.3}
               maxZoom={2}
             >
-              <Background gap={24} color="#d5dbe3" />
+              <Background gap={24} color={gridColour} />
               <Controls showInteractive={false} />
             </ReactFlow>
           )}

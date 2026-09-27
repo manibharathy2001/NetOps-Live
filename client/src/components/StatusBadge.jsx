@@ -1,7 +1,7 @@
 export const STATUS = {
-  UP: { label: 'Up', dot: 'bg-up', text: 'text-up', stripe: 'border-l-up', flash: 'rgba(30, 142, 90, 0.22)' },
-  DEGRADED: { label: 'Degraded', dot: 'bg-warn', text: 'text-warn', stripe: 'border-l-warn', flash: 'rgba(183, 121, 31, 0.25)' },
-  DOWN: { label: 'Down', dot: 'bg-down', text: 'text-down', stripe: 'border-l-down', flash: 'rgba(197, 59, 59, 0.25)' },
+  UP: { label: 'Up', dot: 'bg-up', text: 'text-up', stripe: 'border-l-up', flash: 'color-mix(in srgb, var(--color-up) 22%, transparent)' },
+  DEGRADED: { label: 'Degraded', dot: 'bg-warn', text: 'text-warn', stripe: 'border-l-warn', flash: 'color-mix(in srgb, var(--color-warn) 25%, transparent)' },
+  DOWN: { label: 'Down', dot: 'bg-down', text: 'text-down', stripe: 'border-l-down', flash: 'color-mix(in srgb, var(--color-down) 25%, transparent)' },
 };
 
 export default function StatusBadge({ status }) {

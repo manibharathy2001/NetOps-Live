@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Cpu, Play, Plug, PowerOff, RotateCcw, Scissors, Unplug, Zap } from 'lucide-react';
 import { api } from '../lib/api.js';
 
-function ActionButton({ children, onClick, busy, disabled, tone = 'default' }) {
+function ActionButton({ children, onClick, busy, disabled, tone = 'default', Icon }) {
   const tones = {
     default: 'border-line bg-panel text-ink hover:bg-canvas',
     danger: 'border-down/40 bg-panel text-down hover:bg-down/5',
@@ -12,8 +13,9 @@ function ActionButton({ children, onClick, busy, disabled, tone = 'default' }) {
       type="button"
       onClick={onClick}
       disabled={disabled || busy}
-      className={`rounded-md border px-3 py-1.5 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 ${tones[tone]}`}
+      className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 ${tones[tone]}`}
     >
+      {Icon && <Icon size={14} aria-hidden="true" />}
       {busy ? 'Sending…' : children}
     </button>
   );
@@ -58,7 +60,10 @@ export default function SimulatorPanel({ devices }) {
   return (
     <section aria-labelledby="sim-heading" className="rounded-lg border border-line bg-panel">
       <div className="border-b border-line px-4 py-3">
-        <h2 id="sim-heading" className="font-semibold">Event simulator</h2>
+        <h2 id="sim-heading" className="flex items-center gap-2 font-semibold">
+          <Zap size={16} className="text-action" aria-hidden="true" />
+          Event simulator
+        </h2>
         <p className="text-sm text-muted">Trigger network events. Every open dashboard sees them instantly.</p>
       </div>
 
@@ -79,6 +84,7 @@ export default function SimulatorPanel({ devices }) {
         <div className="flex flex-wrap gap-2">
           <ActionButton
             tone="danger"
+            Icon={PowerOff}
             busy={busy === 'down'}
             disabled={!device || isDown}
             onClick={() => run('down', 'Take device down', 'device-down', { hostname })}
@@ -86,6 +92,7 @@ export default function SimulatorPanel({ devices }) {
             Take device down
           </ActionButton>
           <ActionButton
+            Icon={Play}
             busy={busy === 'up'}
             disabled={!device || !isDown}
             onClick={() => run('up', 'Bring device up', 'device-up', { hostname })}
@@ -93,6 +100,7 @@ export default function SimulatorPanel({ devices }) {
             Bring device up
           </ActionButton>
           <ActionButton
+            Icon={Cpu}
             busy={busy === 'cpu'}
             disabled={!device || isDown}
             onClick={() => run('cpu', 'Spike CPU', 'high-cpu', { hostname, cpu: 95, durationSec: 30 })}
@@ -119,6 +127,7 @@ export default function SimulatorPanel({ devices }) {
           <div className="mt-2 flex flex-wrap gap-2">
             <ActionButton
               tone="danger"
+              Icon={Unplug}
               busy={busy === 'ifdown'}
               disabled={!iface || iface.operStatus === 'down'}
               onClick={() => run('ifdown', 'Shut interface', 'interface-down', { hostname, interface: ifName })}
@@ -126,6 +135,7 @@ export default function SimulatorPanel({ devices }) {
               Shut interface
             </ActionButton>
             <ActionButton
+              Icon={Plug}
               busy={busy === 'ifup'}
               disabled={!iface || iface.operStatus === 'up'}
               onClick={() => run('ifup', 'Restore interface', 'interface-up', { hostname, interface: ifName })}
@@ -145,6 +155,7 @@ export default function SimulatorPanel({ devices }) {
           <div className="mt-2">
             <ActionButton
               tone="danger"
+              Icon={Scissors}
               busy={busy === 'fiber'}
               disabled={!device}
               onClick={() => run('fiber', 'Fiber cut', 'scenario/fiber-cut', { hostname })}
@@ -156,7 +167,7 @@ export default function SimulatorPanel({ devices }) {
 
         <div className="flex items-center justify-between gap-3 border-t border-line pt-4">
           <p className="text-sm text-muted">Clear every alarm and bring all devices back up.</p>
-          <ActionButton tone="primary" busy={busy === 'recover'} onClick={() => run('recover', 'Recover network', 'recover', {})}>
+          <ActionButton tone="primary" Icon={RotateCcw} busy={busy === 'recover'} onClick={() => run('recover', 'Recover network', 'recover', {})}>
             Recover network
           </ActionButton>
         </div>

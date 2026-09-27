@@ -87,11 +87,17 @@ export function buildLinks(devices) {
   return links;
 }
 
-const EDGE_UP = '#8494a7';
-const EDGE_DOWN = '#c53b3b';
-const EDGE_SELECTED = '#1f4e9c';
+// Read the live theme colours instead of hard-coding them, so the diagram
+// follows the light/dark toggle.
+const cssVar = (name, fallback) =>
+  getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 
 export function toEdges(links, selectedId) {
+  const EDGE_UP = cssVar('--color-muted', '#8494a7');
+  const EDGE_DOWN = cssVar('--color-down', '#c53b3b');
+  const EDGE_SELECTED = cssVar('--color-action', '#1f4e9c');
+  const LABEL_BG = cssVar('--color-canvas', '#eef1f5');
+
   return links.map((l) => {
     const selected = l.id === selectedId;
     return {

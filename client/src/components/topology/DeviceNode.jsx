@@ -22,7 +22,7 @@ function DeviceNode({ data }) {
   return (
     <div
       ref={ref}
-      className={`w-[190px] rounded-md border border-l-4 border-line bg-panel px-3 py-2 shadow-sm ${s.stripe} ${
+      className={`w-[190px] rounded-lg border border-l-4 border-line bg-panel px-3 py-2.5 shadow-sm ${s.stripe} ${
         isSelected ? 'outline-2 outline-offset-2 outline-action' : ''
       }`}
     >

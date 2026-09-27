@@ -10,15 +10,16 @@ export default function DeviceTable({ devices, alarmsByHost, changedAt }) {
     <div className="overflow-x-auto">
       <table className="w-full min-w-[520px] text-left">
         <thead>
-          <tr className="text-sm text-muted">
-            <th className="py-2 pr-4 pl-5 font-medium">Device</th>
-            <th className="py-2 pr-4 font-medium">Status</th>
-            <th className="hidden py-2 pr-4 font-medium md:table-cell">Management IP</th>
-            <th className="py-2 pr-4 font-medium">CPU</th>
-            <th className="hidden py-2 pr-4 font-medium sm:table-cell">Memory</th>
-            <th className="hidden py-2 pr-4 font-medium lg:table-cell">Interfaces</th>
-            <th className="hidden py-2 pr-4 font-medium lg:table-cell">BGP</th>
-            <th className="hidden py-2 pr-4 font-medium md:table-cell">Last seen</th>
+          <tr className="text-xs tracking-wide text-muted">
+            <th className="py-2.5 pr-4 pl-5 font-medium">Device</th>
+            <th className="py-2.5 pr-4 font-medium">Status</th>
+            <th className="hidden py-2.5 pr-4 font-medium md:table-cell">Management IP</th>
+            <th className="py-2.5 pr-4 font-medium">CPU</th>
+            <th className="hidden py-2.5 pr-4 font-medium xl:table-cell">CPU trend</th>
+            <th className="hidden py-2.5 pr-4 font-medium sm:table-cell">Memory</th>
+            <th className="hidden py-2.5 pr-4 font-medium lg:table-cell">Interfaces</th>
+            <th className="hidden py-2.5 pr-4 font-medium lg:table-cell">BGP</th>
+            <th className="hidden py-2.5 pr-4 font-medium md:table-cell">Last seen</th>
           </tr>
         </thead>
         <tbody>

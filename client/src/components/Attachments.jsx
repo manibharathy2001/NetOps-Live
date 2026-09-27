@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { FileText, Trash2, Upload } from 'lucide-react';
 import { API_URL, api } from '../lib/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { timeAgo } from '../lib/format.js';
@@ -136,6 +137,7 @@ export default function Attachments({ incident, canEdit }) {
             dragging ? 'border-action bg-action/5' : 'border-line'
           }`}
         >
+          <Upload size={18} className="mx-auto mb-2 text-muted" aria-hidden="true" />
           <p>
             Drop a screenshot or command output here, or{' '}
             <button type="button" onClick={() => inputRef.current?.click()} className="font-medium text-action hover:underline">
@@ -189,7 +191,8 @@ export default function Attachments({ incident, canEdit }) {
               <p className="text-xs text-muted">
                 {a.uploadedBy}, {timeAgo(a.uploadedAt, now)}
                 {canRemove(a) && (
-                  <button type="button" onClick={() => remove(a)} className="ml-2 font-medium text-down hover:underline">
+                  <button type="button" onClick={() => remove(a)} className="ml-2 inline-flex items-center gap-1 font-medium text-down hover:underline">
+                    <Trash2 size={12} aria-hidden="true" />
                     Remove
                   </button>
                 )}
@@ -203,16 +206,20 @@ export default function Attachments({ incident, canEdit }) {
         <ul className="divide-y divide-line rounded-md border border-line">
           {files.map((a) => (
             <li key={a._id} className="flex items-center justify-between gap-3 px-3 py-2">
-              <div className="min-w-0">
+              <div className="flex min-w-0 items-center gap-2">
+                <FileText size={16} className="shrink-0 text-muted" aria-hidden="true" />
+                <div className="min-w-0">
                 <a href={a.url} target="_blank" rel="noreferrer" className="block truncate font-mono text-sm text-action hover:underline">
                   {a.filename}
                 </a>
                 <p className="text-xs text-muted">
                   {formatBytes(a.bytes)}, {a.uploadedBy}, {timeAgo(a.uploadedAt, now)}
                 </p>
+                </div>
               </div>
               {canRemove(a) && (
-                <button type="button" onClick={() => remove(a)} className="shrink-0 text-sm font-medium text-down hover:underline">
+                <button type="button" onClick={() => remove(a)} className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-down hover:underline">
+                  <Trash2 size={13} aria-hidden="true" />
                   Remove
                 </button>
               )}

@@ -6,6 +6,7 @@ import StatusSummary from '../components/StatusSummary.jsx';
 import DeviceTable from '../components/DeviceTable.jsx';
 import AlarmFeed from '../components/AlarmFeed.jsx';
 import SimulatorPanel from '../components/SimulatorPanel.jsx';
+import { SkeletonRows } from '../components/Skeleton.jsx';
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -29,7 +30,7 @@ export default function DashboardPage() {
             <span className="text-sm text-muted">Select a device to see interfaces and neighbors</span>
           </div>
 
-          {loading && <p className="px-5 py-6 text-sm text-muted">Loading devices…</p>}
+          {loading && <SkeletonRows rows={6} />}
           {error && (
             <p className="px-5 py-6 text-sm text-down" role="alert">
               {error}
