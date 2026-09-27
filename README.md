@@ -4,9 +4,10 @@ Real-time network operations dashboard. Engineers watch device health, get alarm
 their screen as they happen, and work the resulting incidents together: assign, comment,
 attach evidence, and follow a shared timeline.
 
-**Live demo:** https://YOUR-APP.vercel.app (sign in with one click, no sign-up)
+**Live demo:** https://netops-live.vercel.app (sign in with one click, no sign-up)
 **Demo accounts:** `mani@netops.local / mani1234` (engineer), `guest@netops.local / guest1234` (read-only)
 
+> First load may take ~30 seconds if the free backend instance is waking up.
 > The demo runs against a simulated Cisco network (ASR 9000 core, NCS-540 aggregation,
 > Nexus 9000 leaves). It generates its own events about once a minute, so the dashboard is
 > never idle. You can also trigger events yourself from the simulator panel.
